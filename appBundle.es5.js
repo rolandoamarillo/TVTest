@@ -2413,112 +2413,6 @@ var APP_com_rolandoamarillo_test = (function () {
     return new app(appSettings);
   }).bind(undefined);
 
-  var Player = /*#__PURE__*/function (_Lightning$Component) {
-    _inherits(Player, _Lightning$Component);
-
-    var _super = _createSuper(Player);
-
-    function Player() {
-      _classCallCheck(this, Player);
-
-      return _super.apply(this, arguments);
-    }
-
-    _createClass(Player, [{
-      key: "_firstActive",
-      value: function _firstActive() {
-        this.tag('MediaPlayer').updateSettings({
-          consumer: this
-        });
-        this.tag('MediaPlayer').open('http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4');
-      } // Canplay
-
-    }, {
-      key: "$mediaPlayerCanplay",
-      value: function $mediaPlayerCanplay() {
-        console.log("Canplay");
-      } // Playing
-
-    }, {
-      key: "$mediaplayerPlaying",
-      value: function $mediaplayerPlaying() {
-        console.log("Playing");
-      } // Ended
-
-    }, {
-      key: "$mediaplayerEnded",
-      value: function $mediaplayerEnded() {
-        console.log("Ended");
-        this.tag('MediaPlayer').seek(0);
-      } // Timeupdate
-
-    }, {
-      key: "$mediaplayerTimeupdate",
-      value: function $mediaplayerTimeupdate() {
-        console.log("Timeupdate");
-      } // Error
-
-    }, {
-      key: "$mediaplayerError",
-      value: function $mediaplayerError() {
-        console.log("Error");
-      } // Loadeddata
-
-    }, {
-      key: "$mediaplayerLoadeddata",
-      value: function $mediaplayerLoadeddata() {
-        console.log("Loadeddata");
-      } // Play
-
-    }, {
-      key: "$mediaplayerPlay",
-      value: function $mediaplayerPlay() {
-        console.log("Play");
-      } // Pause
-
-    }, {
-      key: "$mediaplayerPause",
-      value: function $mediaplayerPause() {
-        console.log("Pause");
-      } // Loadstart
-
-    }, {
-      key: "$mediaplayerLoadstart",
-      value: function $mediaplayerLoadstart() {
-        console.log("Loadstart");
-      } // Seeking
-
-    }, {
-      key: "$mediaplayerSeeking",
-      value: function $mediaplayerSeeking() {
-        console.log("Seeking");
-      } // Seeked
-
-    }, {
-      key: "$mediaplayerSeeked",
-      value: function $mediaplayerSeeked() {
-        console.log("Seeked");
-      } // Encrypted
-
-    }, {
-      key: "$mediaplayerEncrypted",
-      value: function $mediaplayerEncrypted() {
-        console.log("Encrypted");
-      }
-    }], [{
-      key: "_template",
-      value: function _template() {
-        return {
-          MediaPlayer: {
-            type: Mediaplayer
-          }
-        };
-      }
-    }]);
-
-    return Player;
-  }(Lightning.Component);
-
   var Api = /*#__PURE__*/function () {
     function Api() {
       _classCallCheck(this, Api);
@@ -2791,6 +2685,8 @@ var APP_com_rolandoamarillo_test = (function () {
       key: "_active",
       value: function _active() {
         this._spinner.start();
+
+        this.signal("_load");
       }
     }, {
       key: "_inactive",
@@ -3220,6 +3116,21 @@ var APP_com_rolandoamarillo_test = (function () {
     }, {
       key: "_register",
       value: function _register() {
+        var _this2 = this;
+
+        this._blur.tag("Background").on("txLoaded", function (e) {
+          _newArrowCheck(this, _this2);
+
+          this.signal("detailsLoaded");
+        }.bind(this));
+
+        this._blur.tag("Background").on("txError", function (e) {
+          _newArrowCheck(this, _this2);
+
+          this._blur.tag("Background").texture = null;
+          this.signal("detailsLoaded");
+        }.bind(this));
+
         this.tag("Blur").transition("amount").on("finish", this._events.showDetails);
       }
     }, {
@@ -3289,6 +3200,8 @@ var APP_com_rolandoamarillo_test = (function () {
         this._asset = v;
 
         this._updateDetails(v);
+
+        this._blur.tag("Background").src = Utils.asset("".concat(v.path, "/backdrop.jpg"));
       }
     }], [{
       key: "_template",
@@ -3311,6 +3224,12 @@ var APP_com_rolandoamarillo_test = (function () {
               alpha: {
                 duration: 1,
                 delay: 2.5
+              }
+            },
+            content: {
+              Background: {
+                w: 1920,
+                h: 1080
               }
             }
           },
