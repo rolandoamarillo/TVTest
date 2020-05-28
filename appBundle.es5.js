@@ -6705,19 +6705,23 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
       key: "_template",
       value: function _template() {
         return {
-          alpha: 1,
           Bandwidth: {
             text: {
               text: "Bandwidth: 0 Kbps",
               fontSize: 16,
-              fontFace: "verdana"
-            }
+              fontFace: "verdana",
+              shadow: true,
+              shadowColor: 0xFF000000
+            },
+            y: 0
           },
           Levels: {
             text: {
               text: "Levels: 0",
               fontSize: 16,
-              fontFace: "verdana"
+              fontFace: "verdana",
+              shadow: true,
+              shadowColor: 0xFF000000
             },
             y: 16
           },
@@ -6725,7 +6729,9 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
             text: {
               text: "Level: 0",
               fontSize: 16,
-              fontFace: "verdana"
+              fontFace: "verdana",
+              shadow: true,
+              shadowColor: 0xFF000000
             },
             y: 32
           },
@@ -6733,7 +6739,9 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
             text: {
               text: "Bitrate: 0",
               fontSize: 16,
-              fontFace: "verdana"
+              fontFace: "verdana",
+              shadow: true,
+              shadowColor: 0xFF000000
             },
             y: 48
           },
@@ -6741,7 +6749,9 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
             text: {
               text: "Width: 0",
               fontSize: 16,
-              fontFace: "verdana"
+              fontFace: "verdana",
+              shadow: true,
+              shadowColor: 0xFF000000
             },
             y: 64
           },
@@ -6749,7 +6759,9 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
             text: {
               text: "Height: 0",
               fontSize: 16,
-              fontFace: "verdana"
+              fontFace: "verdana",
+              shadow: true,
+              shadowColor: 0xFF000000
             },
             y: 80
           },
@@ -6757,7 +6769,9 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
             text: {
               text: "Dropped: 0",
               fontSize: 16,
-              fontFace: "verdana"
+              fontFace: "verdana",
+              shadow: true,
+              shadowColor: 0xFF000000
             },
             y: 96
           },
@@ -6765,7 +6779,9 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
             text: {
               text: "Decoded: 0",
               fontSize: 16,
-              fontFace: "verdana"
+              fontFace: "verdana",
+              shadow: true,
+              shadowColor: 0xFF000000
             },
             y: 112
           },
@@ -6773,7 +6789,9 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
             text: {
               text: "Total Dropped: 0",
               fontSize: 16,
-              fontFace: "verdana"
+              fontFace: "verdana",
+              shadow: true,
+              shadowColor: 0xFF000000
             },
             y: 128
           }
