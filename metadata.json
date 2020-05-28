@@ -1,6 +1,6 @@
 {
-  "name": "Test",
-  "identifier": "com.rolandoamarillo.test",
+  "name": "IPTV-Canvas",
+  "identifier": "com.rolandoamarillo.iptv.canvas",
   "version": "1.0.0",
   "icon": "./static/icon.png"
 }

@@ -2,17 +2,23 @@
   "appSettings": {
     "stage": {
       "clearColor": "0x00000000",
-      "useImageWorker": false
+      "precision": 1,
+      "w": 1920,
+      "h": 1080,
+      "useImageWorker": true
     },
-    "debug": true
+    "debug": true,
+    "videoStats": true
   },
   "platformSettings": {
     "path": "./static",
-    "log": true,
+    "log": false,
     "showVersion": true,
     "esEnv": "es5",
+    "background": "black",
+    "web": true,
     "showFps": {
-      "interval": 300,
+      "interval": 1000,
       "log": true,
       "threshold": 1
     }
