@@ -2,9 +2,6 @@
   "appSettings": {
     "stage": {
       "clearColor": "0x00000000",
-      "precision": 1,
-      "w": 1920,
-      "h": 1080,
       "useImageWorker": true
     },
     "debug": true,
@@ -16,7 +13,7 @@
     "showVersion": true,
     "esEnv": "es5",
     "background": "black",
-    "web": true,
+    "platform": "web",
     "showFps": {
       "interval": 1000,
       "log": true,

@@ -6526,14 +6526,18 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
     _createClass(HlsPlayer, [{
       key: "_initDOM",
       value: function _initDOM() {
+        var canvasList = document.getElementsByTagName('canvas');
+        var canvas = canvasList[0];
+        var canvasWidth = canvas.offsetWidth;
+        var canvasHeight = canvas.offsetHeight;
         var container = document.createElement('div');
         container.id = "container";
-        container.width = Settings.get('app', "stage").w;
-        container.height = Settings.get('app', "stage").h;
+        container.width = canvasWidth;
+        container.height = canvasHeight;
         this._video = document.createElement('video');
         this._video.id = "video";
-        this._video.width = Settings.get('app', "stage").w;
-        this._video.height = Settings.get('app', "stage").h;
+        this._video.width = canvasWidth;
+        this._video.height = canvasHeight;
         container.appendChild(this._video);
         document.body.appendChild(container);
       }
@@ -6585,6 +6589,7 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
             playerStats.bitrate = level.bitrate;
             playerStats.videoWidth = level.width;
             playerStats.videoHeight = level.height;
+            playerStats.codecs = level.videoCodec + " " + level.audioCodec;
           }
 
           playerStats.levels = hls$1.levels.length;
@@ -6652,7 +6657,8 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
             videoHeight = v.videoHeight,
             curentDropped = v.curentDropped,
             currentDecoded = v.currentDecoded,
-            totalDroppedFrames = v.totalDroppedFrames;
+            totalDroppedFrames = v.totalDroppedFrames,
+            codecs = v.codecs;
         this.patch({
           Bandwidth: {
             text: {
@@ -6698,6 +6704,11 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
             text: {
               text: "Total Dropped: " + totalDroppedFrames
             }
+          },
+          Codecs: {
+            text: {
+              text: "Codecs: " + codecs
+            }
           }
         });
       }
@@ -6733,6 +6744,17 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
               shadow: true,
               shadowColor: 0xFF000000
             },
+            y: 32
+          },
+          Codecs: {
+            text: {
+              text: "Codecs: ",
+              fontSize: 16,
+              fontFace: "verdana",
+              shadow: true,
+              shadowColor: 0xFF000000
+            },
+            x: 200,
             y: 32
           },
           Bitrate: {
@@ -6802,6 +6824,43 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
     return VideoStats;
   }(lng.Component);
 
+  var VideoStats$1 = /*#__PURE__*/function (_lng$Component) {
+    _inherits(VideoStats, _lng$Component);
+
+    var _super = _createSuper(VideoStats);
+
+    function VideoStats() {
+      _classCallCheck(this, VideoStats);
+
+      return _super.apply(this, arguments);
+    }
+
+    _createClass(VideoStats, [{
+      key: "message",
+      set: function set(v) {
+        this._message = v;
+        this.patch({
+          Message: {
+            x: 1920 / 2,
+            y: 1080 / 2,
+            mount: 0.5,
+            text: {
+              text: v,
+              textColor: 0xffffffff
+            }
+          }
+        });
+      }
+    }], [{
+      key: "_template",
+      value: function _template() {
+        return {};
+      }
+    }]);
+
+    return VideoStats;
+  }(lng.Component);
+
   var videoStats = null;
 
   var App = /*#__PURE__*/function (_Lightning$Component) {
@@ -6826,8 +6885,6 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
     }, {
       key: "_init",
       value: function _init() {
-        this._setState("Splash");
-
         this._initial_settings();
       }
     }, {
@@ -6836,20 +6893,30 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
         if (Settings.has('platform', 'background')) {
           var color = Settings.get('platform', 'background');
           document.body.style.backgroundColor = color;
-        } // TODO Move this to a more appropiate place
+        }
+
+        var ok = true; // TODO Move this to a more appropiate place
         // Settings for web platform
 
-
-        if (Settings.has('platform', 'web') & Settings.get('platform', 'web')) {
+        if (Settings.has('platform', 'platform') & Settings.get('platform', 'platform') == "web") {
           // Initialize the HlsPlayer
           if (Hls.isSupported()) {
             window._player = new HlsPlayer();
           } else {
             console.log("HLS not supported!");
+            ok = false;
           }
         }
 
         window._vpi.init();
+
+        if (ok) {
+          this._setState("Splash");
+        } else {
+          this.tag("Error").message = "Device is not supported";
+
+          this._setState("Error");
+        }
       }
     }, {
       key: "_populate",
@@ -6892,11 +6959,15 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
             type: Splash,
             alpha: 0
           },
+          Error: {
+            type: VideoStats$1,
+            alpha: 0
+          },
           VideoStats: {
             type: VideoStats,
             x: 120,
             y: 12,
-            alpha: 1
+            alpha: 0
           },
           Media: {
             type: Browse,
@@ -6943,25 +7014,46 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
 
           return Splash;
         }(this), /*#__PURE__*/function (_this4) {
-          _inherits(Media, _this4);
+          _inherits(Error, _this4);
 
-          var _super3 = _createSuper(Media);
+          var _super3 = _createSuper(Error);
+
+          function Error() {
+            _classCallCheck(this, Error);
+
+            return _super3.apply(this, arguments);
+          }
+
+          _createClass(Error, [{
+            key: "$enter",
+            value: function $enter() {
+              this.tag("Error").setSmooth("alpha", 1);
+            }
+          }]);
+
+          return Error;
+        }(this), /*#__PURE__*/function (_this5) {
+          _inherits(Media, _this5);
+
+          var _super4 = _createSuper(Media);
 
           function Media() {
             _classCallCheck(this, Media);
 
-            return _super3.apply(this, arguments);
+            return _super4.apply(this, arguments);
           }
 
           _createClass(Media, [{
             key: "$enter",
             value: function $enter() {
               this.tag("Media").setSmooth("alpha", 1);
+              this.tag("VideoStats").setSmooth("alpha", 1);
             }
           }, {
             key: "$exit",
             value: function $exit() {
               this.tag("Media").setSmooth("alpha", 0);
+              this.tag("VideoStats").setSmooth("alpha", 0);
             }
           }, {
             key: "_getFocused",
