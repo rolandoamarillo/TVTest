@@ -12,7 +12,7 @@
     "log": false,
     "showVersion": true,
     "esEnv": "es5",
-    "background": "black",
+    "background": "transparent",
     "platform": "web",
     "showFps": {
       "interval": 1000,

@@ -2699,7 +2699,9 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
                 text: v.name,
                 wordWrapWidth: 370,
                 textOverflow: 'ellipsis',
-                maxLines: 1
+                maxLines: 1,
+                shadow: true,
+                shadowColor: 0xFF000000
               }
             }
           }
@@ -2862,7 +2864,9 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
             text: {
               text: "",
               fontSize: 40,
-              fontFace: "verdana"
+              fontFace: "verdana",
+              shadow: true,
+              shadowColor: 0xFF000000
             }
           },
           Items: {
@@ -6556,7 +6560,13 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
         playerStats.curentDropped = 0;
         playerStats.currentDecoded = 0;
         playerStats.totalDroppedFrames = 0;
-        hls$1 = new Hls();
+        var config = {
+          // debug: true,
+          capLevelToPlayerSize: true,
+          capLevelOnFPSDrop: true,
+          startLevel: 0
+        };
+        hls$1 = new Hls(config); // hls.autoLevelCapping = 0;
 
         this._initHlsListeners();
 
@@ -6580,6 +6590,7 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
     }, {
       key: "heartbeat",
       value: function heartbeat() {
+        playerStats.state = hls$1.streamController._state;
         var levels = hls$1.levels;
 
         if (levels) {
@@ -6658,7 +6669,8 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
             curentDropped = v.curentDropped,
             currentDecoded = v.currentDecoded,
             totalDroppedFrames = v.totalDroppedFrames,
-            codecs = v.codecs;
+            codecs = v.codecs,
+            state = v.state;
         this.patch({
           Bandwidth: {
             text: {
@@ -6705,6 +6717,11 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
               text: "Total Dropped: " + totalDroppedFrames
             }
           },
+          State: {
+            text: {
+              text: "Fragment Loader State: " + state
+            }
+          },
           Codecs: {
             text: {
               text: "Codecs: " + codecs
@@ -6744,17 +6761,6 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
               shadow: true,
               shadowColor: 0xFF000000
             },
-            y: 32
-          },
-          Codecs: {
-            text: {
-              text: "Codecs: ",
-              fontSize: 16,
-              fontFace: "verdana",
-              shadow: true,
-              shadowColor: 0xFF000000
-            },
-            x: 200,
             y: 32
           },
           Bitrate: {
@@ -6816,6 +6822,28 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
               shadowColor: 0xFF000000
             },
             y: 128
+          },
+          State: {
+            text: {
+              text: "Fragment Loader State: ",
+              fontSize: 16,
+              fontFace: "verdana",
+              shadow: true,
+              shadowColor: 0xFF000000
+            },
+            x: 250,
+            y: 16
+          },
+          Codecs: {
+            text: {
+              text: "Codecs: ",
+              fontSize: 16,
+              fontFace: "verdana",
+              shadow: true,
+              shadowColor: 0xFF000000
+            },
+            x: 250,
+            y: 32
           }
         };
       }
