@@ -6539,11 +6539,15 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
         container.width = canvasWidth;
         container.height = canvasHeight;
         this._video = document.createElement('video');
-        this._video.id = "video";
+        this._video.id = "video"; // var source = document.createElement('source');
+        // source.src = "https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_fmp4/v4/main.mp4";
+        // this._video.appendChild(source);
+
         this._video.width = canvasWidth;
         this._video.height = canvasHeight;
         container.appendChild(this._video);
-        document.body.appendChild(container);
+        document.body.appendChild(container); // this._video.load();
+        // this._video.play();
       }
     }, {
       key: "_play",
@@ -6585,6 +6589,11 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
           playerStats.curentDropped = data.curentDropped;
           playerStats.currentDecoded = data.currentDecoded;
           playerStats.totalDroppedFrames = data.totalDroppedFrames;
+        });
+        hls$1.on(Hls.Events.FRAG_PARSING_DATA, function (event, data) {
+          if (data.type === "video") {
+            playerStats.fps = data.nb / (data.endPTS - data.startPTS);
+          } else if (data.type === "audio") ;
         });
       }
     }, {
@@ -6670,7 +6679,8 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
             currentDecoded = v.currentDecoded,
             totalDroppedFrames = v.totalDroppedFrames,
             codecs = v.codecs,
-            state = v.state;
+            state = v.state,
+            fps = v.fps;
         this.patch({
           Bandwidth: {
             text: {
@@ -6725,6 +6735,11 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
           Codecs: {
             text: {
               text: "Codecs: " + codecs
+            }
+          },
+          FPS: {
+            text: {
+              text: "FPS: " + fps
             }
           }
         });
@@ -6844,6 +6859,17 @@ var APP_com_rolandoamarillo_iptv_canvas = (function () {
             },
             x: 250,
             y: 32
+          },
+          FPS: {
+            text: {
+              text: "FPS: ",
+              fontSize: 16,
+              fontFace: "verdana",
+              shadow: true,
+              shadowColor: 0xFF000000
+            },
+            x: 250,
+            y: 48
           }
         };
       }
