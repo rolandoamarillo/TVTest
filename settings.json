@@ -2,7 +2,8 @@
   "appSettings": {
     "stage": {
       "clearColor": "0x00000000",
-      "useImageWorker": true
+      "useImageWorker": true,
+      "fixedDt": 0.033
     },
     "debug": true,
     "videoStats": true
