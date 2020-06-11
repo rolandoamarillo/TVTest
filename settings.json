@@ -3,6 +3,7 @@
     "stage": {
       "clearColor": "0x00000000",
       "useImageWorker": true,
+      "memoryPressure": 4194304,
       "fixedDt": 0.033
     },
     "debug": false,
