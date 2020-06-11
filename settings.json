@@ -5,20 +5,15 @@
       "useImageWorker": true,
       "fixedDt": 0.033
     },
-    "debug": true,
+    "debug": false,
     "videoStats": true
   },
   "platformSettings": {
     "path": "./static",
     "log": false,
-    "showVersion": true,
+    "showVersion": false,
     "esEnv": "es5",
     "background": "transparent",
-    "platform": "web",
-    "showFps": {
-      "interval": 1000,
-      "log": true,
-      "threshold": 1
-    }
+    "platform": "web"
   }
 }
